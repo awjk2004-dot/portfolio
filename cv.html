@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>أحمد عبده · أعمالي</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ============================================================
+               CSS VARIABLES & RESET
+               ============================================================ */
+        :root {
+            --bg-primary: #0b0f1a;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --bg-card-hover: rgba(255, 255, 255, 0.07);
+            --text-primary: #eef2f8;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+
+            --accent-about: #4f8cf7;
+            --accent-projects: #f77f4f;
+            --accent-skills: #4fcf8c;
+            --accent-services: #f7b731;
+            --accent-contact: #cf4f8f;
+
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --shadow-card: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --radius: 18px;
+            --transition: 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: var(--font-family);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-muted);
+            border-radius: 12px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        /* -------- Language Toggle Button -------- */
+        #lang-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--text-primary);
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            letter-spacing: 0.02em;
+        }
+        #lang-toggle:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.04);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .portfolio {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: var(--bg-primary);
+        }
+
+        .accordion-wrapper {
+            display: flex;
+            gap: 14px;
+            width: 100%;
+            max-width: 1360px;
+            height: 580px;
+            max-height: 85vh;
+            position: relative;
+        }
+
+        .accordion-item {
+            flex: 0 0 82px;
+            transition: flex 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                background 0.4s ease,
+                border-color 0.4s ease;
+            border-radius: var(--radius);
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: stretch;
+            box-shadow: var(--shadow-card);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+
+        .accordion-item:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .accordion-item.active {
+            flex: 1 1 420px;
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.12);
+            cursor: default;
+        }
+
+        .accordion-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            border-radius: var(--radius) var(--radius) 0 0;
+            opacity: 0.7;
+            transition: opacity 0.4s ease;
+        }
+        .accordion-item:hover::before {
+            opacity: 1;
+        }
+        .accordion-item.active::before {
+            opacity: 1;
+        }
+
+        .accordion-item[data-section="about"]::before {
+            background: var(--accent-about);
+        }
+        .accordion-item[data-section="projects"]::before {
+            background: var(--accent-projects);
+        }
+        .accordion-item[data-section="skills"]::before {
+            background: var(--accent-skills);
+        }
+        .accordion-item[data-section="services"]::before {
+            background: var(--accent-services);
+        }
+        .accordion-item[data-section="contact"]::before {
+            background: var(--accent-contact);
+        }
+
+        .accordion-inner {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding: 28px 24px 24px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+            min-height: 48px;
+            transition: gap 0.3s ease;
+        }
+
+        .accordion-icon {
+            font-size: 26px;
+            line-height: 1;
+            flex-shrink: 0;
+            width: 40px;
+            text-align: center;
+            transition: transform 0.4s ease;
+        }
+        .accordion-item.active .accordion-icon {
+            transform: scale(1.05);
+        }
+
+        .accordion-label {
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            white-space: nowrap;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+            text-transform: uppercase;
+            font-size: 15px;
+            opacity: 0.8;
+        }
+        .accordion-item.active .accordion-label {
+            opacity: 1;
+        }
+
+        .accordion-item[data-section="about"].active .accordion-label {
+            color: var(--accent-about);
+        }
+        .accordion-item[data-section="projects"].active .accordion-label {
+            color: var(--accent-projects);
+        }
+        .accordion-item[data-section="skills"].active .accordion-label {
+            color: var(--accent-skills);
+        }
+        .accordion-item[data-section="services"].active .accordion-label {
+            color: var(--accent-services);
+        }
+        .accordion-item[data-section="contact"].active .accordion-label {
+            color: var(--accent-contact);
+        }
+
+        .accordion-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-top: 18px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(12px);
+            transition: opacity 0.4s ease 0.1s,
+                visibility 0s linear 0.5s,
+                transform 0.4s ease 0.1s;
+            scrollbar-width: thin;
+            scrollbar-color: var(--text-muted) transparent;
+            -webkit-overflow-scrolling: touch;
+        }
+        .accordion-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .accordion-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .accordion-content::-webkit-scrollbar-thumb {
+            background: var(--text-muted);
+            border-radius: 12px;
+        }
+
+        .accordion-item.active .accordion-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            transition: opacity 0.5s ease 0.15s,
+                visibility 0s linear 0s,
+                transform 0.5s ease 0.15s;
+        }
+
+        /* -------- About -------- */
+        .about-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .about-top {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .about-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-about), #6c5ce7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 8px 32px rgba(79, 140, 247, 0.3);
+            overflow: hidden;
+            border: 3px solid rgba(79, 140, 247, 0.2);
+        }
+        .about-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .about-name {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+        .about-name span {
+            color: var(--accent-about);
+        }
+        .about-role {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+        .about-bio {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            max-width: 90%;
+            margin-top: 4px;
+        }
+        .about-bio strong {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* -------- Projects -------- */
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding-right: 4px;
+        }
+        .project-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 16px 18px;
+            border-left: 3px solid var(--accent-projects);
+            transition: background 0.3s ease;
+        }
+        .project-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .project-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+        .project-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+        .project-tag {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--accent-projects);
+            background: rgba(247, 127, 79, 0.12);
+            padding: 2px 12px;
+            border-radius: 20px;
+        }
+        .github-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-muted);
+            padding: 2px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .project-link {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent-projects);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+        .project-link:hover {
+            opacity: 0.7;
+            text-decoration: underline;
+        }
+
+        /* -------- Services -------- */
+        .services-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .service-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 16px 18px;
+            border-left: 3px solid var(--accent-services);
+            transition: background 0.3s ease;
+        }
+        .service-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .service-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .service-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            line-height: 1.6;
+        }
+        .pricing-highlight {
+            background: rgba(247, 183, 49, 0.10);
+            border: 1px solid rgba(247, 183, 49, 0.20);
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-top: 6px;
+        }
+        .pricing-highlight .price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-services);
+        }
+        .pricing-highlight .price-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        .pricing-highlight ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 14px;
+        }
+        .pricing-highlight ul li {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .pricing-highlight ul li::before {
+            content: "✓";
+            color: var(--accent-services);
+            font-weight: 700;
+        }
+
+        /* -------- Skills -------- */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-top: 6px;
+        }
+        .skill-tag {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            letter-spacing: 0.01em;
+        }
+        .skill-tag:hover {
+            background: rgba(79, 207, 140, 0.12);
+            border-color: var(--accent-skills);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+        .skill-tag.highlight {
+            background: rgba(79, 207, 140, 0.10);
+            border-color: rgba(79, 207, 140, 0.2);
+            color: var(--accent-skills);
+        }
+
+        /* -------- Contact -------- */
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding-top: 2px;
+        }
+        .contact-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            transition: background 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .contact-row:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+        .contact-row .icon {
+            font-size: 20px;
+            width: 36px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .contact-row .label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            flex: 1;
+        }
+        .contact-row .value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .contact-row .value:hover {
+            color: var(--accent-contact);
+        }
+        .contact-row .value.email {
+            color: var(--accent-contact);
+        }
+        .contact-row .value.email:hover {
+            text-decoration: underline;
+        }
+
+        .social-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 6px;
+        }
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .social-link:hover {
+            background: rgba(207, 79, 143, 0.10);
+            border-color: var(--accent-contact);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+        .social-link .icon {
+            font-size: 18px;
+        }
+
+        /* ============================================================
+               MOBILE: VERTICAL ACCORDION
+               ============================================================ */
+        @media (max-width: 820px) {
+            .portfolio {
+                padding: 16px;
+                align-items: flex-start;
+                min-height: 100vh;
+            }
+
+            .accordion-wrapper {
+                flex-direction: column;
+                height: auto;
+                max-height: none;
+                gap: 12px;
+                padding: 0;
+            }
+
+            .accordion-item {
+                flex: 0 0 auto !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto;
+                min-height: 68px;
+                border-radius: 14px;
+                transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+                cursor: pointer;
+                background: var(--bg-card);
+            }
+
+            .accordion-item::before {
+                height: 3px;
+                border-radius: 14px 14px 0 0;
+            }
+
+            .accordion-item .accordion-inner {
+                padding: 18px 20px 16px 20px;
+            }
+
+            .accordion-item .accordion-content {
+                padding-top: 12px;
+                max-height: 0;
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-8px);
+                transition: max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                    opacity 0.35s ease,
+                    visibility 0s linear 0.45s,
+                    transform 0.35s ease,
+                    padding 0.3s ease;
+                overflow-y: hidden;
+                padding-bottom: 0;
+            }
+
+            .accordion-item.active .accordion-content {
+                max-height: 70vh;
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+                overflow-y: auto !important;
+                -webkit-overflow-scrolling: touch;
+                transition: max-height 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                    opacity 0.4s ease 0.1s,
+                    visibility 0s linear 0s,
+                    transform 0.4s ease 0.1s,
+                    padding 0.3s ease;
+                padding-bottom: 4px;
+            }
+
+            .accordion-item.active {
+                background: rgba(255, 255, 255, 0.06);
+                border-color: rgba(255, 255, 255, 0.10);
+            }
+
+            .accordion-item .accordion-header {
+                min-height: 36px;
+                gap: 12px;
+            }
+
+            .accordion-item .accordion-icon {
+                font-size: 22px;
+                width: 32px;
+            }
+
+            .accordion-item .accordion-label {
+                font-size: 13px;
+                letter-spacing: 0.06em;
+            }
+
+            .about-avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 36px;
+            }
+            .about-top {
+                gap: 16px;
+            }
+            .about-name {
+                font-size: 26px;
+            }
+            .about-bio {
+                max-width: 100%;
+                font-size: 14px;
+            }
+
+            .project-item {
+                padding: 14px 16px;
+            }
+            .project-title {
+                font-size: 15px;
+            }
+            .project-desc {
+                font-size: 13px;
+            }
+
+            .skill-tag {
+                font-size: 13px;
+                padding: 8px 16px;
+            }
+
+            .service-card {
+                padding: 14px 16px;
+            }
+            .service-title {
+                font-size: 16px;
+            }
+            .pricing-highlight .price {
+                font-size: 22px;
+            }
+            .pricing-highlight ul li {
+                font-size: 12px;
+            }
+
+            .contact-row {
+                padding: 10px 14px;
+            }
+            .contact-row .value {
+                font-size: 13px;
+            }
+            .social-link {
+                padding: 8px 14px;
+                font-size: 13px;
+            }
+
+            .accordion-item:not(.active) .accordion-header::after {
+                content: '›';
+                font-size: 22px;
+                color: var(--text-muted);
+                margin-left: auto;
+                transition: transform 0.3s ease;
+                opacity: 0.5;
+            }
+            .accordion-item.active .accordion-header::after {
+                transform: rotate(90deg);
+                opacity: 0.8;
+                color: var(--text-secondary);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Language Toggle Button -->
+    <button id="lang-toggle">🇬🇧 English</button>
+
+    <main class="portfolio">
+        <div class="accordion-wrapper" id="accordion">
+
+            <!-- ABOUT -->
+            <div class="accordion-item active" data-section="about" tabindex="0" role="button" aria-expanded="true">
+                <div class="accordion-inner">
+                    <div class="accordion-header">
+                        <span class="accordion-icon">👤</span>
+                        <span class="accordion-label" data-i18n="about_title">About</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="about-grid">
+                            <div class="about-top">
+                                <div class="about-avatar">
+                                    <img src="ahmed-photo.jpg" alt="Ahmed Abdu" />
+                                </div>
+                                <div>
+                                    <div class="about-name"><span data-i18n="name">Ahmed Abdu</span></div>
+                                    <div class="about-role" data-i18n="role">Web Developer · PHP & FastAPI · Kassala, Sudan</div>
+                                </div>
+                            </div>
+                            <p class="about-bio" data-i18n="bio1">
+                                I build <strong>full-stack web applications</strong> with PHP, MySQL, and JavaScript.
+                                I also work with FastAPI for high-performance APIs.
+                            </p>
+                            <p class="about-bio" style="margin-top:-6px;" data-i18n="bio2">
+                                📍 Based in Kassala, Sudan – available for remote work worldwide.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJECTS -->
+            <div class="accordion-item" data-section="projects" tabindex="0" role="button" aria-expanded="false">
+                <div class="accordion-inner">
+                    <div class="accordion-header">
+                        <span class="accordion-icon">🚀</span>
+                        <span class="accordion-label" data-i18n="projects_title">Projects</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="project-list">
+
+                            <div class="project-item">
+                                <div class="project-title">
+                                    <span data-i18n="proj1_title">Transportation Management System</span>
+                                    <span class="github-badge" data-i18n="github_badge">📁 GitHub</span>
+                                </div>
+                                <div class="project-desc" data-i18n="proj1_desc">Transportation management system for tracking vehicles, routes, and schedules.</div>
+                                <span class="project-tag">PHP · MySQL · CSS · JS</span>
+                                <br />
+                                <a href="https://github.com/awjk2004-dot" target="_blank" class="project-link" data-i18n="view_github">🔗 View on GitHub</a>
+                            </div>
+
+                            <div class="project-item">
+                                <div class="project-title">
+                                    <span data-i18n="proj2_title">Sweets Store (Graduation Project)</span>
+                                    <span class="github-badge" data-i18n="github_badge">📁 GitHub</span>
+                                </div>
+                                <div class="project-desc" data-i18n="proj2_desc">Graduation project – a full-featured e-commerce store for sweets and pastries.</div>
+                                <span class="project-tag">PHP · MySQL · CSS · JS</span>
+                                <br />
+                                <a href="https://github.com/awjk2004-dot" target="_blank" class="project-link" data-i18n="view_github">🔗 View on GitHub</a>
+                            </div>
+
+                            <div class="project-item">
+                                <div class="project-title">
+                                    <span data-i18n="proj3_title">Gas Station Management Project</span>
+                                    <span class="github-badge" data-i18n="github_badge">📁 GitHub</span>
+                                </div>
+                                <div class="project-desc" data-i18n="proj3_desc">Complete gas station management system for inventory, sales, and reports.</div>
+                                <span class="project-tag">PHP · MySQL · CSS · JS</span>
+                                <br />
+                                <a href="https://github.com/awjk2004-dot" target="_blank" class="project-link" data-i18n="view_github">🔗 View on GitHub</a>
+                            </div>
+
+                            <div class="project-item">
+                                <div class="project-title">
+                                    <span data-i18n="proj4_title">Sudan Tourism Guide Homepage</span>
+                                    <span class="github-badge" data-i18n="github_badge">📁 GitHub</span>
+                                </div>
+                                <div class="project-desc" data-i18n="proj4_desc">Interactive tourism guide homepage with a FastAPI backend and MySQL database.</div>
+                                <span class="project-tag">HTML · CSS · JS · FastAPI · MySQL</span>
+                                <br />
+                                <a href="https://github.com/awjk2004-dot" target="_blank" class="project-link" data-i18n="view_github">🔗 View on GitHub</a>
+                            </div>
+
+                            <div class="project-item">
+                                <div class="project-title">
+                                    <span data-i18n="proj5_title">Shariyan Blood Platform</span>
+                                    <span class="github-badge" data-i18n="github_badge">📁 GitHub</span>
+                                </div>
+                                <div class="project-desc" data-i18n="proj5_desc">Blood donation and request platform connecting donors with recipients.</div>
+                                <span class="project-tag">HTML · CSS · JS · FastAPI · MySQL</span>
+                                <br />
+                                <a href="https://github.com/awjk2004-dot" target="_blank" class="project-link" data-i18n="view_github">🔗 View on GitHub</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SKILLS -->
+            <div class="accordion-item" data-section="skills" tabindex="0" role="button" aria-expanded="false">
+                <div class="accordion-inner">
+                    <div class="accordion-header">
+                        <span class="accordion-icon">⚡</span>
+                        <span class="accordion-label" data-i18n="skills_title">Skills</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="skills-grid">
+                            <span class="skill-tag highlight">PHP</span>
+                            <span class="skill-tag highlight">FastAPI</span>
+                            <span class="skill-tag highlight">Python</span>
+                            <span class="skill-tag highlight">JavaScript</span>
+                            <span class="skill-tag highlight">MySQL</span>
+                            <span class="skill-tag">HTML5 / CSS3</span>
+                            <span class="skill-tag">Tailwind CSS</span>
+                            <span class="skill-tag">Git &amp; GitHub</span>
+                            <span class="skill-tag">Docker</span>
+                            <span class="skill-tag">Linux</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SERVICES -->
+            <div class="accordion-item" data-section="services" tabindex="0" role="button" aria-expanded="false">
+                <div class="accordion-inner">
+                    <div class="accordion-header">
+                        <span class="accordion-icon">💼</span>
+                        <span class="accordion-label" data-i18n="services_title">Services</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="services-grid">
+
+                            <div class="service-card">
+                                <div class="service-title" data-i18n="service2_title">💰 Web Development – Starting at $120</div>
+                                <div class="service-desc" data-i18n="service2_desc">
+                                    A complete, custom-built website tailored to your needs.
+                                </div>
+                                <div class="pricing-highlight">
+                                    <div class="price" data-i18n="price">$120</div>
+                                    <div class="price-desc" data-i18n="price_desc">Base package – includes everything you need to launch</div>
+                                    <ul>
+                                        <li data-i18n="feature1">Responsive design (mobile‑first)</li>
+                                        <li data-i18n="feature2">PHP / MySQL backend</li>
+                                        <li data-i18n="feature3">Custom admin panel</li>
+                                        <li data-i18n="feature4">Contact / enquiry forms</li>
+                                        <li data-i18n="feature5">Up to 5 content pages</li>
+                                        <li data-i18n="feature6">Deployment assistance</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTACT -->
+            <div class="accordion-item" data-section="contact" tabindex="0" role="button" aria-expanded="false">
+                <div class="accordion-inner">
+                    <div class="accordion-header">
+                        <span class="accordion-icon">✉️</span>
+                        <span class="accordion-label" data-i18n="contact_title">Contact</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="contact-info">
+                            <div class="contact-row">
+                                <span class="icon">📧</span>
+                                <span class="label" data-i18n="contact_email_label">Email</span>
+                                <a href="mailto:awjk2004@gmail.com" class="value email">awjk2004@gmail.com</a>
+                            </div>
+                            <div class="contact-row">
+                                <span class="icon">📱</span>
+                                <span class="label" data-i18n="contact_whatsapp_label">WhatsApp</span>
+                                <a href="https://wa.me/249128407328" target="_blank" class="value" style="color: var(--accent-contact);">0128407328</a>
+                            </div>
+                            <div class="contact-row">
+                                <span class="icon">📍</span>
+                                <span class="label" data-i18n="contact_location_label">Location</span>
+                                <span class="value" data-i18n="contact_location_value">Kassala, Sudan</span>
+                            </div>
+                            <div class="social-row">
+                                <a href="https://github.com/awjk2004-dot" target="_blank" class="social-link"><span class="icon">🐙</span> GitHub</a>
+                                <a href="https://www.linkedin.com/in/ahmed-abdu-1a84a1359" target="_blank" class="social-link"><span class="icon">🔗</span> LinkedIn</a>
+                                <a href="https://www.facebook.com/profile.php?id=61593868820431" target="_blank" class="social-link"><span class="icon">📘</span> Facebook</a>
+                            </div>
+                            <p style="font-size:13px; color:var(--text-muted); margin-top:6px;" data-i18n="contact_status">
+                                ✦ Open to collaborations &amp; new opportunities.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            'use strict';
+
+            const translations = {
+                en: {
+                    about_title: 'About',
+                    projects_title: 'Projects',
+                    skills_title: 'Skills',
+                    services_title: 'Services',
+                    contact_title: 'Contact',
+                    name: 'Ahmed Abdu',
+                    role: 'Web Developer · PHP & FastAPI · Kassala, Sudan',
+                    bio1: 'I build full-stack web applications with PHP, MySQL, and JavaScript. I also work with FastAPI for high-performance APIs.',
+                    bio2: '📍 Based in Kassala, Sudan – available for remote work worldwide.',
+                    
+                    proj1_title: 'Transportation Management System',
+                    proj1_desc: 'Transportation management system for tracking vehicles, routes, and schedules.',
+                    proj2_title: 'Sweets Store (Graduation Project)',
+                    proj2_desc: 'Graduation project – a full-featured e-commerce store for sweets and pastries.',
+                    proj3_title: 'Gas Station Management Project',
+                    proj3_desc: 'Complete gas station management system for inventory, sales, and reports.',
+                    proj4_title: 'Sudan Tourism Guide Homepage',
+                    proj4_desc: 'Interactive tourism guide homepage with a FastAPI backend and MySQL database.',
+                    proj5_title: 'Shariyan Blood Platform',
+                    proj5_desc: 'Blood donation and request platform connecting donors with recipients.',
+                    github_badge: '📁 GitHub',
+                    view_github: '🔗 View on GitHub',
+
+                    service2_title: '💰 Web Development – Starting at $120',
+                    service2_desc: 'A complete, custom-built website tailored to your needs.',
+                    price: '$120',
+                    price_desc: 'Base package – includes everything you need to launch',
+                    feature1: 'Responsive design (mobile‑first)',
+                    feature2: 'PHP / MySQL backend',
+                    feature3: 'Custom admin panel',
+                    feature4: 'Contact / enquiry forms',
+                    feature5: 'Up to 5 content pages',
+                    feature6: 'Deployment assistance',
+                    contact_email_label: 'Email',
+                    contact_whatsapp_label: 'WhatsApp',
+                    contact_location_label: 'Location',
+                    contact_location_value: 'Kassala, Sudan',
+                    contact_status: '✦ Open to collaborations & new opportunities.',
+                },
+                ar: {
+                    about_title: 'من أنا',
+                    projects_title: 'المشاريع',
+                    skills_title: 'المهارات',
+                    services_title: 'الخدمات',
+                    contact_title: 'التواصل',
+                    name: 'أحمد عبده',
+                    role: 'مطور ويب · PHP و FastAPI · كسلا، السودان',
+                    bio1: 'أبني تطبيقات ويب متكاملة باستخدام PHP و MySQL و JavaScript، بالإضافة إلى FastAPI لتطوير واجهات برمجة تطبيقات عالية الأداء.',
+                    bio2: '📍 مقيم في كسلا، السودان – متاح للعمل عن بُعد حول العالم.',
+
+                    proj1_title: 'نظام إدارة المواصلات',
+                    proj1_desc: 'نظام إدارة المواصلات لتتبع المركبات والطرق والجداول الزمنية.',
+                    proj2_title: 'فكرة متجر حلويات (مشروع تخرج)',
+                    proj2_desc: 'مشروع التخرج – متجر إلكتروني متكامل للحلويات والمعجنات.',
+                    proj3_title: 'مشروع ادارة محطة وقود',
+                    proj3_desc: 'نظام متكامل لإدارة محطة وقود للمخزون والمبيعات والتقارير.',
+                    proj4_title: 'Sudan Tourism Guide Homepage',
+                    proj4_desc: 'صفحة رئيسية تفاعلية لدليل السياحة مع واجهة خلفية FastAPI وقاعدة بيانات MySQL.',
+                    proj5_title: 'Shariyan Blood Platform',
+                    proj5_desc: 'منصة للتبرع بالدم وطلباته تربط المتبرعين بالمستفيدين.',
+                    github_badge: '📁 GitHub',
+                    view_github: '🔗 عرض على GitHub',
+
+                    service2_title: '💰 تطوير المواقع – يبدأ من ١٢٠ دولار',
+                    service2_desc: 'موقع كامل ومصمم خصيصاً لتلبية احتياجاتك.',
+                    price: '١٢٠ دولار',
+                    price_desc: 'الباقة الأساسية – تشمل كل ما تحتاجه للإطلاق',
+                    feature1: 'تصميم متجاوب (الجوال أولاً)',
+                    feature2: 'واجهة خلفية PHP / MySQL',
+                    feature3: 'لوحة تحكم مخصصة',
+                    feature4: 'نماذج تواصل واستفسار',
+                    feature5: 'حتى ٥ صفحات محتوى',
+                    feature6: 'مساعدة في النشر',
+                    contact_email_label: 'البريد الإلكتروني',
+                    contact_whatsapp_label: 'واتساب',
+                    contact_location_label: 'الموقع',
+                    contact_location_value: 'كسلا، السودان',
+                    contact_status: '✦ متعاون ومستعد لفرص جديدة.',
+                }
+            };
+
+            let currentLang = 'en';
+            const toggleBtn = document.getElementById('lang-toggle');
+            const i18nElements = document.querySelectorAll('[data-i18n]');
+
+            function updateLanguage(lang) {
+                currentLang = lang;
+                toggleBtn.textContent = lang === 'en' ? '🇦🇪 عربي' : '🇬🇧 English';
+
+                i18nElements.forEach(el => {
+                    const key = el.dataset.i18n;
+                    if (translations[lang] && translations[lang][key] !== undefined) {
+                        el.innerHTML = translations[lang][key];
+                    }
+                });
+
+                const htmlTag = document.documentElement;
+                if (lang === 'ar') {
+                    htmlTag.setAttribute('dir', 'rtl');
+                    htmlTag.setAttribute('lang', 'ar');
+                } else {
+                    htmlTag.setAttribute('dir', 'ltr');
+                    htmlTag.setAttribute('lang', 'en');
+                }
+            }
+
+            toggleBtn.addEventListener('click', function() {
+                const newLang = currentLang === 'en' ? 'ar' : 'en';
+                updateLanguage(newLang);
+            });
+        });
+
+        const items = document.querySelectorAll('.accordion-item');
+        items.forEach(item => {
+            item.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A') return;
+                
+                items.forEach(i => {
+                    i.classList.remove('active');
+                    i.setAttribute('aria-expanded', 'false');
+                });
+                item.classList.add('active');
+                item.setAttribute('aria-expanded', 'true');
+            });
+        });
+    </script>
+</body>
+</html>
